@@ -3,9 +3,9 @@ import { asyncHandler } from "../utils/asyncHahandler.js";
 import jwt from "jsonwebtoken";
 import { User } from "../models/user.model.js";
 
-export const verifyJWT = asyncHandler(async(req,resizeBy,next)=>{
+export const verifyJWT = asyncHandler(async(req,res,next)=>{
     try{
-        const token = req.cookie?.accessToken || req.header
+        const token = req.cookies?.accessToken || req.header
       ("Authorization")?.replace("Bearer" , "")
 
      if(!token){
@@ -18,14 +18,14 @@ export const verifyJWT = asyncHandler(async(req,resizeBy,next)=>{
 
      if(!user){
         // NEXT _VIDEO :DISCUSS ABOUT FRONTEND
-        throw new ApiError(401, "Invalid Access Token ")
+        throw new ApiError(401, "User not found ")
      }
      req.user = user;
      next()
 
 
     }catch(error){
-        throw new ApiError(404),erroe?.message || "Invalid access token"
+        throw new ApiError(404),error?.message || "Invalid access token"
 
     }
 })
